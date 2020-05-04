@@ -2,7 +2,7 @@
 Projet de BTS SNIR
 
 
-#I-INTRODUCTION 
+## I-INTRODUCTION 
  
  
 Dans le cadre de notre seconde année de BTS Système Numérique option Informatique et Réseaux au Lycée Dorian, il nous est proposé un projet de 4 mois nous permettant de mettre en pratique nos connaissances et nos compétences professionnelles au travers d’un cahier des charges ayant pour finalité la conception et le développement d’une application d’entreprise en accord avec nos intérêts professionnels. 
