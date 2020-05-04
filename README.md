@@ -25,5 +25,5 @@ En louant ainsi un véhicule et son personnel, vous pouvez immédiatement gérer
 C’est la solution pour une bonne gestion d’un service transport interne tout en obtenant le maximum de souplesse. 
 Ainsi, TransSecure met à votre disposition des véhicules performant tout en respectant l’environnement. TransSecure dispose de deux flottes de véhicules : 
 
-  - Une flotte de 50 véhicules utilitaires banalisés RENAULT MASTER version L2H2 
-  - Une flotte de 20 motocycles PEUGEOT BELVILLE 125 ACTIVE 
+  -  Une flotte de 50 véhicules utilitaires banalisés RENAULT MASTER version L2H2 
+  -  Une flotte de 20 motocycles PEUGEOT BELVILLE 125 ACTIVE 
