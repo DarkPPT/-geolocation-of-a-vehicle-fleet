@@ -1,0 +1,399 @@
+#include <conio.h>
+#include "clib.h"
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+
+
+unsigned int port=0;   // Settings  definir
+unsigned int flow=0x2;   // Settings  definir
+unsigned long baud=9600;
+unsigned int bits=8;   // Settings  definir 7, 8
+unsigned int parity=0; // Settings  definir
+unsigned int stop=1;   // Settings  definir 1, 2
+
+
+struct Data{
+   char dategps[7];
+   char heuregps[7];
+   char longitudegps[12];
+   char latitudegps[12];
+   char nbsat[3];
+   char quality[3];
+};
+
+struct conf{
+	char number[13];
+	char id[4];
+	char cpin[5];	
+};
+
+
+char * str_subgeo (const char *s, unsigned int start, unsigned int end);
+int opengeo(void);
+void closegeo(void);
+void writegeo(char *string);
+char* readgeo(void);
+void getdata(struct Data d);
+void sendsms(char *sms);
+void initsim(void);
+int satIsOK(void);
+int qualityIsOK(void);
+void convert(void);
+int checkconnect(void);
+void getInfo(void);
+
+
+
+void main(void)
+{
+
+		BIOS_Set_Focus(FOCUS_APPLICATION);
+
+
+      printf("\r\n------------------------------------------------------------------------------\r\n");
+		printf("-*****--*****--*****--**--*--*****---------*****--******--******--------------\r\n");
+		printf("---*----*---*--*---*--**--*--*-------------*------*-------*-------------------\r\n");
+		printf("---*----*---*--*---*--*-*-*--*-------------*------*-------*-------------------\r\n");
+		printf("---*----*****--*****--*-*-*--*****--*****--*****--*****---*-------------------\r\n");
+		printf("---*----**-----*---*--*-*-*------*-------------*--*-------*-------------------\r\n");
+		printf("---*----*-*----*---*--*--**------*-------------*--*-------*-------------------\r\n");
+		printf("---*----*--*---*---*--*--**--*****---------*****--******--******--------------\r\n");
+		printf("------------------------------------------------------------------------------\r\n");
+
+   	BIOS_Set_Focus(FOCUS_BOTH);
+
+}
+
+
+
+
+
+char * str_subgeo (const char *s, unsigned int start, unsigned int end)
+{
+   char *new_s = NULL;
+
+   if (s != NULL && start < end)
+   {
+/* (1)*/
+      new_s = (char*)malloc (sizeof (*new_s) * (end - start + 2));
+      if (new_s != NULL)
+      {
+         int i;
+
+/* (2) */
+         for (i = start; i <= end; i++)
+         {
+/* (3) */
+            new_s[i-start] = s[i];
+         }
+         new_s[i-start] = '\0';
+      }
+      else
+      {
+         fprintf (stderr, "Memoire insuffisante\n");
+
+      }
+   }
+   return new_s;
+}
+
+
+int opengeo(void)
+{
+	if (fossil_init( port ) != 0x1954)
+	{
+		printf("\r\nError: fossil_init() failed\r\n");
+      return 1;
+
+	}
+
+	fossil_setbaud(port, baud, parity, bits, stop);
+	fossil_set_flowcontrol( port, flow );
+
+	fossil_purge_output( port );
+	fossil_purge_input( port );
+
+   return 0;
+}
+
+
+void closegeo(void)
+{
+	fossil_deinit( port );
+}
+
+void writegeo(char *string)
+{
+	fossil_writeblock( port, (unsigned char *)string , strlen( string ) );
+   RTX_Sleep_Time(500);
+}
+
+char* readgeo(void)
+{
+	char chr[200];
+   int i;
+   for(i=-1;i<200;i++) chr[i]=0;
+	fossil_readblock( port, (unsigned char *)chr, 200 ) ;
+   RTX_Sleep_Time(100);
+
+   /*for(i=0;i<140;i++)
+  	{
+  		printf("\r\n%d:%c\r\n",i,chr[i]);
+  	}*/
+
+   //printf("\r\n%s\r\n",chr);
+   return chr;
+}
+
+
+void getdata(void)
+{
+	char buff[100];
+   char *dt[100];
+   char *dt1[100];
+   char *token;
+   char *tmp;
+   int i;
+   memset(buftest,0,100);
+	writegeo("AT$GPSACP\r");
+   memcpy(buff,readgeo(),100);
+
+   //printf("\r\n%s\r\n", buff);
+
+   token=strtok(buff, ",");
+   for(i=0;i<11;i++)
+   {
+   	dt[i]=token;
+   	//printf("\r\n%d:\"%s\"\r\n",i,token);
+   	token=strtok(NULL, ",");
+   }
+
+   if(!strcmp(dt[4],0))
+   {
+   	//printf("\r\n-NO GPS-\r\n");
+   	memcpy(data.dategps,dt[2],6);
+   	data.dategps[6]=0;
+
+      //printf("\r\n%s\r\n",dt[2]);
+   	memcpy(data.longitudegps,"0",11);
+   	data.longitudegps[11]=0;
+
+      memcpy(data.latitudegps,dt[1],11);
+   	data.latitudegps[11]=0;
+   }
+   else
+   {
+   	//printf("\r\n-GPS-\r\n");
+   	memcpy(data.dategps,dt[9],6);
+   	data.dategps[6]=0;
+
+
+   	memcpy(data.longitudegps,dt[2],11);
+   	data.longitudegps[11]=0;
+
+      memcpy(data.latitudegps,dt[1],11);
+   	data.latitudegps[11]=0;
+   }
+
+   /*memcpy(data.dategps,dt[9],6);
+   data.dategps[6]=0;
+
+
+   memcpy(data.longitudegps,dt[2],11);
+   data.longitudegps[11]=0;
+
+   memcpy(data.latitudegps,dt[1],11);
+   data.latitudegps[11]=0;*/
+
+
+   //printf("\r\nHeure:\"%s\"\r\n",str_subgeo(dt[0],21,24));
+   tmp=str_subgeo(dt[0],21,26);
+   memcpy(data.heuregps,tmp,6);
+   data.heuregps[6]=0;
+   free(tmp);
+
+   tmp=str_subgeo(dt[10],0,2);
+   memcpy(data.nbsat,tmp,2);
+   data.nbsat[2]=0;
+   free(tmp);
+
+
+
+
+   memset(buff,0,100);
+	writegeo("AT+CSQ\r");
+   memcpy(buff,readgeo(),100);
+
+   token=strtok(buff, ",");
+
+   for(i=0;i<2;i++)
+   {
+   	dt1[i]=token;
+   	//printf("\r\n%d:\"%s\"  SIZE:%d\r\n",i,token, strlen(token));
+   	token=strtok(NULL, ",");
+   }
+
+   //printf("\r\n\"%s\"\r\n", buff);
+
+   /*for(i=0;i<20;i++)
+   {
+
+   	printf("\r\n%d:%c\r\n",i,buff[i]);
+
+   }*/
+   //printf("\r\n%s\r\n", str_subgeo(buff,15,16));
+   tmp=str_subgeo(buff,15,16);
+   memcpy(data.quality,tmp,2);
+   data.quality[2]=0;
+   free(tmp);
+
+
+   /*printf("\r\nheure:%s\r\n",str_subgeo(dt[0],21,26));
+   printf("\r\ndate:%s\r\n",dt[9]);
+   printf("\r\nlongitude:%s\r\n",dt[1]);
+   printf("\r\nlatitude:%s\r\n",dt[2]);
+   printf("\r\nnbsat:%s\r\n",str_subgeo(dt[10],0,2));*/
+   /*for(i=0;i<11;i++)
+   {
+
+   	printf("\r\n%d:%s\r\n",i,dt[i]);
+
+   }*/
+
+
+   //printf("\r\n-%s-\r\n",token);
+   //strncpy(data.date,token,6);
+
+
+   /*memcpy(data.latitudegps,"4851.2825N",11);
+   data.latitudegps[11]=0;
+
+   memcpy(data.longitudegps,"00223.5799E",11);
+   data.longitudegps[11]=0;*/
+
+
+
+}
+
+void sendsms(char *sms)
+{
+	char buffer[100];
+   char cmd[100];
+
+   sprintf(cmd,"AT+CMGS=\"%s\"\r", number,25);
+   memset(buffer,0,100);
+   writegeo("AT+CMGF=1\r");
+   writegeo(cmd);
+   //printf("\r\n%s\r\n",readgeo());
+   sprintf(buffer,"%s%c\r", sms,26);
+   writegeo(buffer);
+   RTX_Sleep_Time(5000);
+   //printf("\r\n%s\r\n",readgeo());
+}
+
+
+void initsim()
+{
+ 	writegeo("AT+CPIN=0000\r");
+   //printf("\r\n%s\r\n", readgeo());
+}
+
+int satIsOK(void)
+{
+	if(atoi(data.nbsat)>=5)
+   	return 0;
+   else
+   	return 1;
+
+}
+
+int qualityIsOK(void)
+{
+  if(atoi(data.quality)>=10)
+   	return 0;
+   else
+   	return 1;
+}
+
+void convert(void)
+{
+	char longitude[10];
+   char longiDegre[4];
+   char longiMinute[8];
+
+
+   char latitude[11];
+   char latiDegre[2];
+   char latiMinute[7];
+
+   memcpy(longitude,data.longitudegps,10);
+   memcpy(latitude,data.latitudegps,11);
+
+   memcpy(longiDegre,str_subgeo(longitude,0,3),3);
+   longiDegre[3]=0;
+
+   memcpy(longiMinute,str_subgeo(longitude,3,9),7);
+   longiMinute[7]=0;
+
+   printf("\r\nLongitude:%s\r\n",longitude);
+   printf("\r\nDegre:%d\r\n",atoi((char*)longiDegre));
+   printf("\r\nMinute:%f\r\n",(float)atof((char*)longiMinute));
+}
+
+int checkconnect()
+{
+	char buffer[100];
+	writegeo("AT\r");
+   memcpy(buffer,readgeo(),100);
+
+   if(strstr(buffer, "OK")==NULL)
+   	return 0;
+	return 1;
+}
+
+void getInfo(void)
+{
+	FILE* fp;
+   char buffer[100];
+   char *tmp;
+   int i;
+	fp=fopen("test.ini","r+");
+   memset(buffer,0,100);
+
+   if(fp==0)
+   {
+
+    	printf("\r\nERROR\r\n");
+
+   }
+   //fprintf(fp,txt);
+   fseek(fp,0,SEEK_SET);
+   fread(buffer,strlen("[GEO]\r\nID=C01\r\nNUMBER=\"+33768749165\"")+1,1,fp);
+   //printf("\r\n%s\r\n",buffer);
+
+   /*for(i=0;i<34;i++)
+   	printf("\r\n%d:%c\r\n",i,buffer[i]);*/
+
+   tmp=str_subgeo(buffer,9,12);
+   memcpy(id,tmp,3);
+   id[3]=0;
+   free(tmp);
+   //printf("\r\nid:%s\r\n",id);
+
+
+   tmp=str_subgeo(buffer,21,33);
+   memcpy(number,tmp,12);
+   number[12]=0;
+   free(tmp);
+   //printf("\r\nNumber:%s\r\n",number);
+
+   fclose(fp);
+
+
+}
+
+
+
