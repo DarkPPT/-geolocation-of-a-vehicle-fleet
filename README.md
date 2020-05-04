@@ -1,4 +1,4 @@
-# Géolocation-of-a-vehicle-fleet
+# Géolocation d'une flotte de véhicules
 Projet de BTS SNIR (2018-2019)
 
 
@@ -24,6 +24,5 @@ Sur simple appel, dès que vous êtes référencés comme clients, TransSecure m
 En louant ainsi un véhicule et son personnel, vous pouvez immédiatement gérer toutes vos expéditions et vos enlèvements à votre convenance. (Dans la limite du bon respect de la réglementation sociale et routière), soit pour une durée d’une demi-journée, d’une journée, d’une semaine, ou plus. 
 C’est la solution pour une bonne gestion d’un service transport interne tout en obtenant le maximum de souplesse. 
 Ainsi, TransSecure met à votre disposition des véhicules performant tout en respectant l’environnement. TransSecure dispose de deux flottes de véhicules : 
-
-  *  Une flotte de 50 véhicules utilitaires banalisés RENAULT MASTER version L2H2 
-  *  Une flotte de 20 motocycles PEUGEOT BELVILLE 125 ACTIVE 
+  -  Une flotte de 50 véhicules utilitaires banalisés RENAULT MASTER version L2H2 
+  -  Une flotte de 20 motocycles PEUGEOT BELVILLE 125 ACTIVE 
