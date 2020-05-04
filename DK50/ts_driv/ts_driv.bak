@@ -1,9 +1,10 @@
+```
 //--------------------------ts_driv.c-------------------------------------------
-// PROJET Géolocalisation temps réel d'une flotte de véhicules
-// Programme pour le module embarqué pour camionnette
+// PROJET GÃ©olocalisation temps rÃ©el d'une flotte de vÃ©hicules
+// Programme pour le module embarquÃ© pour camionnette
 //
 // Description: Le programme ci dessous permet l'envoi de la localisation
-// par SMS d'un véhicule toute les 5 minutes avec les 5 dernières localisation
+// par SMS d'un vÃ©hicule toute les 5 minutes avec les 5 derniÃ¨res localisation
 
 
 //------------------------------------------------------------------------------
@@ -34,16 +35,16 @@ unsigned int stop=1;     							// 1 BIT DE STOP
 //------------------------------------------------------------------------------
 //------------------------LES STRUCTURES DE DONNEES-----------------------------
 
-struct GPS{ 					///////////Structure des données GPS//////////
+struct GPS{ 					///////////Structure des donnÃ©es GPS//////////
    char dategps[7];        //  Date du jour	ddMMaaaa
    char heuregps[7];       //  Heure du jour UTC	MMmmss
-   char longitudegps[12];  //  Longitude en Degés Minutes Secondes   dddmm.ssssE/W
-   char latitudegps[12];   //  Latitude en Degés Minutes Secondes    ddmm.ssssN/S
+   char longitudegps[12];  //  Longitude en DegÃ©s Minutes Secondes   dddmm.ssssE/W
+   char latitudegps[12];   //  Latitude en DegÃ©s Minutes Secondes    ddmm.ssssN/S
    char nbsat[3];          //  Nombre de satellites	XX
 };                         //////////////////////////////////////////////
 
 struct CONF{              //////////////////////////////////////////////
-	char number[13];       //	 Numéro de téléphone du poste de commande +33XXXXXXXXX
+	char number[13];       //	 NumÃ©ro de tÃ©lÃ©phone du poste de commande +33XXXXXXXXX
 	char id[4];            //   Identification du module CXX
 	char cpin[5];          //   Code PIN de la carte SIM
 };                        //////////////////////////////////////////////
@@ -55,7 +56,7 @@ struct CONF{              //////////////////////////////////////////////
 //------------------------------------------------------------------------------
 //-----------------------------TABLEAU DE CORRESPONDANCE-------------------
 
-int dbm[]={-113,-111,-109,-107,-105,-103,-101,-99,-97,-95,-93,-91,-89,-87,-85,-83,-81,-79,-77,-75,-73,-71,-69,-67,-65,-63,-61,-59,-57,-55,-53,-51}; //correspondance de la qualité du signal en dbm
+int dbm[]={-113,-111,-109,-107,-105,-103,-101,-99,-97,-95,-93,-91,-89,-87,-85,-83,-81,-79,-77,-75,-73,-71,-69,-67,-65,-63,-61,-59,-57,-55,-53,-51}; //correspondance de la qualitÃ© du signal en dbm
 
 //------------------------------------------------------------------------------
 
@@ -65,14 +66,14 @@ int dbm[]={-113,-111,-109,-107,-105,-103,-101,-99,-97,-95,-93,-91,-89,-87,-85,-8
 int opengeo(void);										//fonction d'ouverture du port RS232
 void closegeo(void);                            //fonction de fermeture du port RS232
 
-void writegeo(char *string);                    //fonction d'éciture sur le port RS232
+void writegeo(char *string);                    //fonction d'Ã©citure sur le port RS232
 char* readgeo(void);                            //fonction de lecture sur le port RS232
 
-int checkconnect(void);                         //fonction de vérification de l'alumage du module GSM-GPS
+int checkconnect(void);                         //fonction de vÃ©rification de l'alumage du module GSM-GPS
 
-struct GPS getgps(void);                            //fonction de récupération des données de localisation
-struct CONF getInfo(void);                          //fonction de récupération de la configuration de l'appilication
-int getpuissance();                               //fonction de récupération des données de qualité
+struct GPS getgps(void);                            //fonction de rÃ©cupÃ©ration des donnÃ©es de localisation
+struct CONF getInfo(void);                          //fonction de rÃ©cupÃ©ration de la configuration de l'appilication
+int getpuissance();                               //fonction de rÃ©cupÃ©ration des donnÃ©es de qualitÃ©
 
 void setconfiguration(void);                    //fonction de configuration du module GSM-GPS
 void initsim(char *pin);                        //fonction d'initialisation du code PIN
@@ -80,27 +81,27 @@ void sendsms(char *sms, char *number);          //fonction d'envoi d'un SMS
 
 void encrypt(char* password,int key);            //fonction de cryptage du message
 
-double convertLatitude(char * latitude);        //fonction de conversion de la latitude en degré déimal
-double convertLongitude(char * longitude);      //fonction de conversion de la longitude en degré déimal
+double convertLatitude(char * latitude);        //fonction de conversion de la latitude en degrÃ© dÃ©imal
+double convertLongitude(char * longitude);      //fonction de conversion de la longitude en degrÃ© dÃ©imal
 
 char * message(struct GPS d1, struct GPS d2, struct GPS d3, struct GPS d4, struct GPS d5, struct CONF config);		//fonction de mise en forme de la trame de message
-char * str_subgeo (const char *s, unsigned int start, unsigned int end);														//fonction pour avoir une partie d'une chaine de charactère
+char * str_subgeo (const char *s, unsigned int start, unsigned int end);														//fonction pour avoir une partie d'une chaine de charactÃ¨re
 
 //------------------------------------------------------------------------------
 
 
 void main(void)
 {
-		struct GPS gps[5];			//Création d'un tableau de type GPS de taille 5
-      struct CONF config;        //Création d'une varriable de type conf
+		struct GPS gps[5];			//CrÃ©ation d'un tableau de type GPS de taille 5
+      struct CONF config;        //CrÃ©ation d'une varriable de type conf
 
-      int i;                     //Création d'un compteur
-      char msg[120];             //Création d'une variable pour stocker le message
-      int quality;               //Création d'une variable pour stocker la qualité du signal GSM
+      int i;                     //CrÃ©ation d'un compteur
+      char msg[120];             //CrÃ©ation d'une variable pour stocker le message
+      int quality;               //CrÃ©ation d'une variable pour stocker la qualitÃ© du signal GSM
       int power;
 
 
-		BIOS_Set_Focus(FOCUS_APPLICATION);  //Permet de définir le focus sur l'application
+		BIOS_Set_Focus(FOCUS_APPLICATION);  //Permet de dÃ©finir le focus sur l'application
 
       printf("\r\n------------------------------------------------------------------------------\r\n");
 		printf("--------*****--*****---------****---****---*****--*---*--******--****---------\r\n");
@@ -116,12 +117,12 @@ void main(void)
       opengeo();						//initialisation du port RS232
       while(checkconnect()!=1)
       {
-         printf(".");            // Tant que le module GSM-GPS n'a pas été allumé
+         printf(".");            // Tant que le module GSM-GPS n'a pas Ã©tÃ© allumÃ©
          RTX_Sleep_Time(1000);   // on attent qu'il le soit
       }
       printf("\r\nCONNECTION RS232 OK\r\n");
 
-      config=getInfo();		//Récupération de la configuration
+      config=getInfo();		//RÃ©cupÃ©ration de la configuration
 
       printf("\r\nNumero:\"%s\"\r\n", config.number);
       printf("\r\nID:\"%s\"\r\n", config.id);
@@ -130,18 +131,18 @@ void main(void)
       setconfiguration();		//configuration du module GPS-GSM
       initsim(config.cpin);   //initialisation de la carte SIM
 
-      //RTX_Sleep_Long(300000);  //On attent 5 minutes une première fois
+      //RTX_Sleep_Long(300000);  //On attent 5 minutes une premiÃ¨re fois
 
       while(1)
       {
       	for(i=0;i<5;i++)
          {
-            gps[i]=getgps();	//Récupération des données de localisation
+            gps[i]=getgps();	//RÃ©cupÃ©ration des donnÃ©es de localisation
 
             while(atoi(gps[i].nbsat)<5)
             {
                printf("\r\nPB DE CONNECTION GPS\r\n");                // Tant que le nombre de satelite est
-               printf("Nombre de satelites -%s-\r\n",gps[i].nbsat);   // strictement inférieur à 5, on attent
+               printf("Nombre de satelites -%s-\r\n",gps[i].nbsat);   // strictement infÃ©rieur Ã  5, on attent
                RTX_Sleep_Time(30000);                                 // 30 secondes
                gps[i]=getgps();
 
@@ -160,7 +161,7 @@ void main(void)
          while(power<10)
          {
          		printf("\r\nPB DE CONNECTION GSM\r\n");						// Tant que la puissance du signal est
-               printf("\r\nQualite %d dBm\r\n",dbm[power]);                 // inférieur à 10 (-93dBm), on attent
+               printf("\r\nQualite %d dBm\r\n",dbm[power]);                 // infÃ©rieur Ã  10 (-93dBm), on attent
                RTX_Sleep_Time(30000);                                   // 30 secondes
 
                power=getpuissance();
@@ -547,3 +548,4 @@ void encrypt(char* password,int key)
         password[i] = password[i] ^ key;
     }
 }
+```
