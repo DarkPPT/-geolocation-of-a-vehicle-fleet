@@ -1,4 +1,3 @@
-```
 //--------------------------ts_driv.c-------------------------------------------
 // PROJET Géolocalisation temps réel d'une flotte de véhicules
 // Programme pour le module embarqué pour camionnette
@@ -548,4 +547,3 @@ void encrypt(char* password,int key)
         password[i] = password[i] ^ key;
     }
 }
-```
