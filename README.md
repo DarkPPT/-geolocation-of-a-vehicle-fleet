@@ -40,13 +40,13 @@ TELIT
 Evaluation Board de la société SparkFun 
 Electronics  
  - d’un DK50 de la société BECK  
- ![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/v%C3%A9hicule.jpg "The Stormtroopocat")
+ ![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/v%C3%A9hicule.jpg "véhicules")
  
  
  
 ou pour les motocycles :  
  - d'un téléphone portable équipé d'un récepteur GPS et d'un système d'exploitation Android
- ![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/motocycle.png "The Stormtroopocat")
+ ![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/motocycle.png "moto")
   
 Elle veut disposer d’un poste de commandement centralisé. Ce poste de commandement est composé : 
  - d’un module GM862-QUAD (contenant un module GSM) de la société TELIT  
@@ -54,7 +54,7 @@ Elle veut disposer d’un poste de commandement centralisé. Ce poste de command
  - d’un ordinateur équipé de Windows 
  - d’une connexion internet 
  
-![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/Centre.jpg "The Stormtroopocat")
+![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/Centre.jpg "center")
  
 ## III-Matériel utilisés
 DK50 et SC13 : 
@@ -63,15 +63,17 @@ Le DK50 est un produit de la société allemande BECK IPC. BECK est un membre du
 Définissons exactement les termes DK50 et SC13 que nous utiliserons.  
  
 Le SC13 est le cœur du système. C’est le microcontrôleur qui va permettre de gérer les périphériques. Ce microcontrôleur intègre un microprocesseur 16 bits du type 80186 cadencé à 40 Mhz, 512 Ko de mémoire Flash, 512 Ko de RAM, des possibilités de communication par RS232 et Ethernet 10 Base-T. 
+
+![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/sc13.jpg "sc13")
  
  
 Mais on ne peut exploiter le SC13 qu’en l’intégrant dans un module qui relie directement les pattes du microcontrôleur aux connectiques normales utilisées. Ce module s’appelle le DK50. C’est un boitier qui intègre entre autres 8 Entrées/Sorties avec leurs LEDs de contrôle, 2 ports séries (COM et EXT), 1 port Ethernet 10 Base-T et 1 LED de trafic Ethernet. 
  
- 
+![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/dk50.jpg "dk50")
  
 L'avantage du SC12 réside dans son noyau temps réel multitâche orchestré par son système d’exploitation RTOS. Celui-ci est propre à l’IPC@CHIP qui comporte une API (Application Programmer Interface) complète autorisant à un accès aisé à toutes ses fonctionnalités mais aussi à un accès simplifié aux services TCP/IP. La figure cidessous représente l’architecture du RTOS : 
  
- 
+![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/arch.jpg "arch")
  
 GM862-GPS et UberBoard v2 : 
  
@@ -117,3 +119,5 @@ Téléphone Android :
 Autrefois, il existait des variantes de cette plateforme pour les téléphones et les tablettes. À partir de la version 4 (Ice Cream Sandwich), toutes les variantes ont été fusionnées pour donner un système plus uniforme, mais plus performant aussi. La dernière version de la plateforme est pour l’heure Android 9. La version 4.1 a comme nom de code Jelly Bean. Google a tenu à conserver le nom, du fait qu’extérieurement, les deux sont plus ou moins similaires. Cependant, d’importantes modifications ont été apportées en interne pour améliorer la version 4.1. 
  
 Le tableau suivant présente quelques différentes distributions d’Android : 
+
+![Stormtroopocat](https://github.com/DarkPPT/geolocation-flotte-de-vehicules/blob/master/images/android.jpg "Android")
