@@ -24,3 +24,29 @@ Sur simple appel, dès que vous êtes référencés comme clients, TransSecure m
 En louant ainsi un véhicule et son personnel, vous pouvez immédiatement gérer toutes vos expéditions et vos enlèvements à votre convenance. (Dans la limite du bon respect de la réglementation sociale et routière), soit pour une durée d’une demi-journée, d’une journée, d’une semaine, ou plus. 
 C’est la solution pour une bonne gestion d’un service transport interne tout en obtenant le maximum de souplesse. 
 Ainsi, TransSecure met à votre disposition des véhicules performant tout en respectant l’environnement. TransSecure dispose de deux flottes de véhicules : 50 véhicules utilitaires et 20 motocycles.
+
+## III-Présentation du projet
+
+Aujourd’hui, les clients se plaignent de ne pas pouvoir suivre leurs livraisons en temps réel lors d’un trajet de l’un des véhicules de la société TransSecure. La société de transports de matériels TransSecure ne dispose d’aucun moyen pour localiser ces flottes de véhicules.  
+Afin d’améliorer la sécurité et le service rendu aux clients en matière de délai, la société TransSecure souhaite connaitre précisément et régulièrement la position de tous ses véhicules lors d’une livraison. Un centre de commandement centralisé permettra la gestion de la géolocalisation des véhicules. Les positions des véhicules doivent être connues à chaque minute. 
+La position d’un véhicule doit être envoyée à un poste de commandement centralisé qui recevra toutes les 5 minutes les 5 dernières positions à chaque minute par SMS. 
+Si les positions d’un véhicule ne sont pas reçues toutes les 5 minutes lors d’une livraison, une alarme est déclenchée pour prévenir l’administrateur du centre qu’un véhicule n’a pas envoyé sa position. 
+De plus pour des raisons de sécurité, les positions des véhicules doivent être envoyées de façon cryptée au centre de commandement centralisé. 
+Cette solution est composée pour les véhicules utilitaires :  
+ - d’un module GM862-GPS (contenant un module GPS et un module GSM) de la société 
+TELIT  
+ - d’une carte SIM (SMS illimité) 
+ - d’un module GM862 EVK V3RS-232 
+Evaluation Board de la société SparkFun 
+Electronics  
+ - d’un DK50 de la société BECK  
+ 
+ou pour les motocycles :  
+ - d'un téléphone portable équipé d'un récepteur GPS et d'un système d'exploitation Android  
+  
+Elle veut disposer d’un poste de commandement centralisé. Ce poste de commandement est composé : 
+ - d’un module GM862-QUAD (contenant un module GSM) de la société TELIT  
+ - d’une carte SIM  
+ - d’un ordinateur équipé de Windows 
+ - d’une connexion internet 
+ 
